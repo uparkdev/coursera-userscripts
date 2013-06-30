@@ -1,10 +1,12 @@
 // ==UserScript==
-// @name        Coursera video control extensions
+// @name        Coursera video player UX improvements
+// @description Extensions for coursera.org to improve UX of html video player - play/pause video on mouse click and space bar, and auto-play next video 
 // @namespace   http://zihotki.com/
 // @include     https://*.coursera.org/*/lecture/*
 // @match       https://*.coursera.org/*/lecture/* 
-// @version     1
+// @version     0.1
 // @grant       none
+// @license     MIT License
 // ==/UserScript==
 
 function mainWrapper(){
@@ -58,9 +60,9 @@ function mainWrapper(){
     
     
     
-    function main(){
+    function setupAutoplay(){
         if (window.QL_player === undefined) {
-            setTimeout(main, 300);
+            setTimeout(setupAutoplay, 300);
             return;
         }
         
@@ -102,10 +104,10 @@ function mainWrapper(){
         });
     };
     
-    function fixVideoControls(){
+    function enhanceVideoControls(){
     
         if (window.QL_player === undefined) {
-            setTimeout(fixVideoControls, 300);
+            setTimeout(enhanceVideoControls, 300);
             return;
         }
     
@@ -117,14 +119,14 @@ function mainWrapper(){
         var oldOnclick = tag.onclick, oldOnkeyup = tag.onkeyup;
         tag.style.cursor ='pointer';
         
-        tag.onclick = function(){        
+        tag.onclick = function(){
             if (tag.paused){
                 tag.play();
             } else {
                 tag.pause();
-            }        
+            }
             
-            if (oldOnclick) oldOnclick();            
+            if (oldOnclick) oldOnclick();
         };
         
         tag.onkeyup = function(e){
@@ -133,18 +135,16 @@ function mainWrapper(){
                     tag.play();
                 } else {
                     tag.pause();
-                }        
+                }
             }
             
             if (oldOnkeyup) oldOnkeyup(e);
         }
-        
-        
     }
 
-    main();
+    setupAutoplay();
     
-    fixVideoControls();
+    enhanceVideoControls();
 };
 
 
